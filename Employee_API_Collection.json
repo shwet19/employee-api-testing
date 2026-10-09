@@ -1,0 +1,116 @@
+{
+	"info": {
+		"_postman_id": "c19b-fresher-qa-portfolio-validation",
+		"name": "Employee Management System API Framework",
+		"description": "Comprehensive functional testing verification suite executing core CRUD operations utilizing public environment payloads.",
+		"schema": "https://getpostman.com"
+	},
+	"item": [
+		{
+			"name": "Execute GET - Fetch Active Records",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://reqres.in",
+					"protocol": "https",
+					"host": ["reqres", "in"],
+					"path": ["api", "users"],
+					"query": [{"key": "page", "value": "2"}]
+				},
+				"description": "Verifies systematic response extraction payloads from live environment nodes."
+			},
+			"response": [],
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('System Status Code returns operational 200 OK', function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test('Latency is within acceptable bounds (< 600ms)', function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(600);",
+							"});",
+							"",
+							"pm.test('JSON Schema structure contains explicit page context metrics', function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.page).to.eql(2);",
+							"    pm.expect(jsonData.data).to.be.an('array');",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			]
+		},
+		{
+			"name": "Execute POST - Instantiate Target Record",
+			"request": {
+				"method": "POST",
+				"header": [{"key": "Content-Type", "value": "application/json"}],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Shweta Putte\",\n    \"job\": \"QA Test Engineer\"\n}"
+				},
+				"url": {
+					"raw": "https://reqres.in",
+					"protocol": "https",
+					"host": ["reqres", "in"],
+					"path": ["api", "users"]
+				},
+				"description": "Validates resource allocation creation protocols."
+			},
+			"response": [],
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('System processes resource generation returning 201 Created', function () {",
+							"    pm.response.to.have.status(201);",
+							"});",
+							"",
+							"pm.test('Verify explicit mapping components match source payload properties', function () {",
+							"    var dataInstance = pm.response.json();",
+							"    pm.expect(dataInstance.name).to.eql('Shweta Putte');",
+							"    pm.expect(dataInstance.job).to.eql('QA Test Engineer');",
+							"    pm.expect(dataInstance.id).to.not.be.undefined;",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			]
+		},
+		{
+			"name": "Execute DELETE - Purge Target Record",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "https://reqres.in/2",
+					"protocol": "https",
+					"host": ["reqres", "in"],
+					"path": ["api", "users", "2"]
+				},
+				"description": "Tests permanent resource removal commands."
+			},
+			"response": [],
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('System accepts transaction removal returning standard 204 No Content state', function () {",
+							"    pm.response.to.have.status(204);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			]
+		}
+	]
+}
